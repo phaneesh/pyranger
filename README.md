@@ -8,7 +8,7 @@ A simple integration library for integrating with ranger service discovery frame
 ## Usage
 
 ```
-from pyranger import RangerClient
+from pyranger.pyranger import RangerClient
 
 test_service = RangerClient('localhost:2181', "namespace", "service-name")
 test_service.start()
