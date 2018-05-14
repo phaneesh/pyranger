@@ -3,6 +3,7 @@ import threading
 import time
 import random
 import json
+import logging
 
 
 class RangerClient(threading.Thread):
@@ -12,11 +13,12 @@ class RangerClient(threading.Thread):
         self.service_name = service_name
         self.nodes = []
         self.active = True
+        self.logger = logging.getLogger("RangerClient")
         self.zk = KazooClient(hosts=zk_hosts, read_only=True)
         self.zk.start()
 
     def run(self):
-        print("Starting ranger for namespace: " + self.namespace + " | Service " + self.service_name)
+        self.logger.info("Starting ranger client for namespace: " + self.namespace + " | Service " + self.service_name)
         while self.active:
             children = self.zk.get_children("/" + self.namespace + "/" + self.service_name)
             avl_nodes = []
