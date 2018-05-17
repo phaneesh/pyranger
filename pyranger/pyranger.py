@@ -7,7 +7,7 @@ import logging
 
 
 class RangerClient(threading.Thread):
-    def __init__(self, zk_hosts, namespace, service_name, endpoint, protocol='http'):
+    def __init__(self, zk_hosts, namespace, service_name, endpoint, protocol='http', refresh_interval=2):
         threading.Thread.__init__(self)
         self.namespace = namespace
         self.service_name = service_name
@@ -15,6 +15,7 @@ class RangerClient(threading.Thread):
         self.active = True
         self.endpoint = endpoint
         self.protocol = protocol
+        self.refresh_interval = refresh_interval
         self.logger = logging.getLogger("RangerClient")
         self.zk = KazooClient(hosts=zk_hosts, read_only=True)
         self.zk.start()
@@ -30,7 +31,7 @@ class RangerClient(threading.Thread):
                 if node_data['healthcheckStatus'] == 'healthy':
                     avl_nodes.append(node_data['host'] + ":" + str(node_data['port']))
             self.nodes = avl_nodes
-            time.sleep(5)
+            time.sleep(self.refresh_interval)
 
     def get_node(self):
         return "%s://%s/%s" % (self.protocol, self.nodes[random.randint(0, len(self.nodes)-1)], self.endpoint)

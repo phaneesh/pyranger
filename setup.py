@@ -4,7 +4,7 @@ from distutils.core import setup
 setup(
     name='pyranger',
     packages=['pyranger'],  # this must be the same as the name above
-    version='0.2',
+    version='0.3',
     description='A simple python library to integrate with ranger (https://github.com/flipkart-incubator/ranger)',
     author='Phaneesh Nagaraja',
     author_email='phaneesh.n@gmail.com',
